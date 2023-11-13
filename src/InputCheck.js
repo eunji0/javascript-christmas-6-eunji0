@@ -1,4 +1,4 @@
-import { ERROR_MESSAGE, MENU_LIST } from './constants.js';
+import { Number, ERROR_MESSAGE, MENU_LIST } from './constants.js';
 
 const checkInputFormat = (input, errorMessage) => {
   if (input === undefined) {
@@ -6,7 +6,6 @@ const checkInputFormat = (input, errorMessage) => {
   }
 };
 
-// 입력이 숫자인지 확인하는 함수
 const checkInputType = (input, errorMessage) => {
   if (!/^\d+$/.test(input)) {
     throw new Error(`${ERROR_MESSAGE.errorText}${errorMessage}`);
@@ -18,7 +17,7 @@ const checkValidateOrderItem = (orderItem) => {
   const [menu, quantity] = orderItem.split('-').map((item) => item.trim());
   const isMenuValid = Object.values(MENU_LIST).flat().includes(menu);
 
-  if (!isMenuValid || Number.isNaN(quantity) || quantity < 1) {
+  if (!isMenuValid || Number.isNaN(quantity) || quantity < Number.orderQuantity) {
     throw new Error(`${ERROR_MESSAGE.errorText}${ERROR_MESSAGE.invalidOrder}`);
   }
 
@@ -47,7 +46,7 @@ const checkValidDate = (date) => {
   checkInputType(date, ERROR_MESSAGE.invalidDate);
 
   const numericDate = parseInt(date, 10);
-  if (numericDate < 1 || numericDate > 31) {
+  if (numericDate < Number.firstDay || numericDate > Number.endDay) {
     throw new Error(`${ERROR_MESSAGE.errorText}${ERROR_MESSAGE.invalidDate}`);
   }
 };
@@ -65,9 +64,9 @@ const checkValidOrder = (order) => {
 
 const validateTotalItems = (quantity) => {
   const totalItems = quantity.reduce((total, item) => total + Number(item), 0);
-  if (totalItems > 20) {
+  if (totalItems > Number.maxTotalMenuCount) {
     throw new Error(
-      `${ERROR_MESSAGE.errorText}${ERROR_MESSAGE.invalidOrder} 주문할 수 있는 최대 개수는 20개입니다.`,
+      `${ERROR_MESSAGE.errorText}${ERROR_MESSAGE.invalidOrder} 주문할 수 있는 최대 개수는 ${Number.maxTotalMenuCount}개입니다.`,
     );
   }
 };
