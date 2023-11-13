@@ -63,11 +63,21 @@ const checkValidOrder = (order) => {
   return orderDetails;
 };
 
+const validateTotalItems = (quantity) => {
+  const totalItems = quantity.reduce((total, item) => total + Number(item), 0);
+  if (totalItems > 20) {
+    throw new Error(
+      `${ERROR_MESSAGE.errorText}${ERROR_MESSAGE.invalidOrder} 주문할 수 있는 최대 개수는 20개입니다.`,
+    );
+  }
+};
+
 const InputCheck = {
   checkInputFormat,
   checkInputType,
   checkValidDate,
   checkValidOrder,
+  validateTotalItems,
 };
 
 export default InputCheck;
