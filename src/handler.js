@@ -1,4 +1,3 @@
-import DiscountCalculator from './DiscountCalculator.js';
 import InputView from './InputView.js';
 import OrderProcessor from './OrderProcessor.js';
 import OutputView from './OutputView.js';
@@ -21,10 +20,16 @@ const orderProcessorHandler = async () =>
     return new OrderProcessor(response);
   }, orderProcessorHandler);
 
-const discountCalculatorHandler = async () =>
+const visitDateHandler = async () =>
   ErrorHandlerAndRetry(async () => {
     const response = await InputView.visitDate();
-    return new DiscountCalculator(response);
-  }, discountCalculatorHandler);
+    return response;
+  }, visitDateHandler);
 
-export { orderProcessorHandler, discountCalculatorHandler };
+export { orderProcessorHandler, visitDateHandler };
+
+// const discountCalculatorHandler = async () =>
+//   ErrorHandlerAndRetry(async () => {
+//     const response = await InputView.visitDate();
+//     return new DiscountCalculator(response);
+//   }, discountCalculatorHandler);

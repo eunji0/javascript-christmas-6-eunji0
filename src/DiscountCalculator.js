@@ -1,25 +1,30 @@
 import { NUMBER, MENU_LIST, SPECIAL_DAY } from './constants.js';
 
 class DiscountCalculator {
-  constructor(visitDate) {
-    this.visitDate = visitDate;
+  constructor() {
+    // 할인 정보 초기화
+    this.christmasDDayDiscount = 0;
+    this.weekdayDiscount = 0;
+    this.weekendDiscount = 0;
+    this.specialDiscount = 1000;
+    this.totalBenefitPrice = 0;
   }
 
   calculateDiscounts(visitDate, orderDetails) {
-    this.totalBenefitPrice = 0;
-
     this.totalBenefitPrice =
       this.calculateChristmasDDayDiscount(visitDate) +
       this.calculateWeekdayDiscount(visitDate, orderDetails) +
       this.calculateWeekendDiscount(visitDate, orderDetails) +
       this.calculateSpecialDiscount(visitDate);
+
+    return this.totalBenefitPrice;
   }
 
   calculateChristmasDDayDiscount(visitDate) {
     if (this.isValidDay(visitDate, NUMBER.firstDay, NUMBER.christmasDay)) {
       return this.calculateDiscountChristmas(visitDate);
     }
-    return false;
+    return 0;
   }
 
   calculateDiscountChristmas(visitDate) {
@@ -47,8 +52,7 @@ class DiscountCalculator {
     ) {
       return this.calculateMenuDiscount(orderDetails, MENU_LIST.디저트, 2023);
     }
-
-    return false;
+    return 0;
   }
 
   calculateWeekendDiscount(visitDate, orderDetails) {
@@ -58,8 +62,7 @@ class DiscountCalculator {
     ) {
       return this.calculateMenuDiscount(orderDetails, MENU_LIST.메인, 2023);
     }
-
-    return false;
+    return 0;
   }
 
   calculateSpecialDiscount(visitDate) {

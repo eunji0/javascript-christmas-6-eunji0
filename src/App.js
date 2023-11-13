@@ -1,10 +1,11 @@
 import OutputView from './OutputView.js';
 import DiscountCalculator from './DiscountCalculator.js';
-import { orderProcessorHandler, discountCalculatorHandler } from './handler.js';
+import { orderProcessorHandler, visitDateHandler } from './handler.js';
 
 class App {
+  #menuOrder;
+
   constructor() {
-    this.beforeDiscountTotalPrice = 0;
     this.totalBenefitPrice = 0;
     this.expectedPrice = 0;
   }
@@ -12,23 +13,27 @@ class App {
   async run() {
     try {
       OutputView.printGreeting();
-      const discountCalculator = await discountCalculatorHandler();
-      this.menuOrder = await orderProcessorHandler();
-      OutputView.printVisitDate(discountCalculator.visitDate);
 
-      const { orderDetails, beforeDiscountTotalPrice } = this.menuOrder.orderAndPrice;
+      const visitDate = await visitDateHandler();
+      this.#menuOrder = await orderProcessorHandler();
+      OutputView.printVisitDate(visitDate);
+
+      const { orderDetails, beforeDiscountTotalPrice } = this.#menuOrder.orderAndPrice;
+
       OutputView.printOrderMenu(orderDetails);
       OutputView.printBeforeDiscountTotalOrderAmount(beforeDiscountTotalPrice);
       OutputView.printGiveawayMenu(beforeDiscountTotalPrice);
-      this.printBenefitDetails(discountCalculator.visitDate, orderDetails);
-      this.totalBenefitPrice = discountCalculator.calculateDiscounts(
-        discountCalculator.visitDate,
-        orderDetails,
-      );
 
-      OutputView.printTotalBenefitAmount(discountCalculator.totalBenefitPrice);
-      this.printAfterDiscountExpectedAmount();
-      OutputView.printDecemberEventBadge(discountCalculator.totalBenefitPrice);
+      this.printBenefitDetails(visitDate, orderDetails);
+
+      const discountCalculator = new DiscountCalculator();
+      this.totalBenefitPrice = discountCalculator.calculateDiscounts(visitDate, orderDetails);
+
+      OutputView.printTotalBenefitAmount(this.totalBenefitPrice);
+      OutputView.printAfterDiscountEstimatedPaymentAmount(
+        beforeDiscountTotalPrice - this.totalBenefitPrice,
+      );
+      OutputView.printDecemberEventBadge(this.totalBenefitPrice);
     } catch (error) {
       OutputView.printError(error);
     }
@@ -60,11 +65,6 @@ class App {
     );
 
     OutputView.printSpecialDiscount(discountCalculator.calculateSpecialDiscount(visitDate));
-  }
-
-  printAfterDiscountExpectedAmount() {
-    this.expectedPrice = this.beforeDiscountTotalPrice - this.totalBenefitPrice;
-    OutputView.printAfterDiscountEstimatedPaymentAmount(this.expectedPrice);
   }
 }
 
