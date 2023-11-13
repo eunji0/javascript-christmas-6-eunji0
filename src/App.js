@@ -6,7 +6,6 @@ class App {
   constructor() {
     this.beforeDiscountTotalPrice = 0;
     this.totalBenefitPrice = 0;
-    this.orderDetails = [];
     this.expectedPrice = 0;
   }
 
@@ -21,7 +20,7 @@ class App {
       OutputView.printOrderMenu(orderDetails);
       OutputView.printBeforeDiscountTotalOrderAmount(beforeDiscountTotalPrice);
       OutputView.printGiveawayMenu(beforeDiscountTotalPrice);
-      this.printBenefitDetails(discountCalculator.visitDate);
+      this.printBenefitDetails(discountCalculator.visitDate, orderDetails);
       this.totalBenefitPrice = discountCalculator.calculateDiscounts(
         discountCalculator.visitDate,
         orderDetails,
@@ -35,14 +34,14 @@ class App {
     }
   }
 
-  printBenefitDetails(visitDate) {
+  printBenefitDetails(visitDate, orderDetails) {
     const discountCalculator = new DiscountCalculator();
     OutputView.printBenefitDetails(visitDate);
 
     if (
       !discountCalculator.calculateChristmasDDayDiscount(visitDate) &&
-      !discountCalculator.calculateWeekdayDiscount(visitDate, this.orderDetails) &&
-      !discountCalculator.calculateWeekendDiscount(visitDate, this.orderDetails) &&
+      !discountCalculator.calculateWeekdayDiscount(visitDate, orderDetails) &&
+      !discountCalculator.calculateWeekendDiscount(visitDate, orderDetails) &&
       !discountCalculator.calculateSpecialDiscount(visitDate)
     ) {
       OutputView.printNotExist();
@@ -53,11 +52,11 @@ class App {
     );
 
     OutputView.printWeekdayDiscount(
-      discountCalculator.calculateWeekdayDiscount(visitDate, this.orderDetails),
+      discountCalculator.calculateWeekdayDiscount(visitDate, orderDetails),
     );
 
     OutputView.printWeekendDiscount(
-      discountCalculator.calculateWeekendDiscount(visitDate, this.orderDetails),
+      discountCalculator.calculateWeekendDiscount(visitDate, orderDetails),
     );
 
     OutputView.printSpecialDiscount(discountCalculator.calculateSpecialDiscount(visitDate));
