@@ -1,13 +1,14 @@
 import { NUMBER, MENU_LIST, SPECIAL_DAY } from './constants.js';
 
 class DiscountCalculator {
-  constructor() {
+  constructor(visitDate) {
     // 할인 정보 초기화
     this.christmasDDayDiscount = 0;
     this.weekdayDiscount = 0;
     this.weekendDiscount = 0;
     this.specialDiscount = 1000;
     this.totalBenefitPrice = 0;
+    this.visitDate = visitDate;
   }
 
   /**
@@ -34,6 +35,8 @@ class DiscountCalculator {
       this.weekdayDiscount +
       this.weekendDiscount +
       this.specialDiscount;
+
+    return this.totalBenefitPrice;
   }
 
   /**
