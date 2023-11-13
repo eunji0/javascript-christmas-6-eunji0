@@ -59,12 +59,14 @@ const EVENT_BADGE = Object.freeze({
 
 const SPECIAL_DAY = Object.freeze([3, 10, 17, 24, 25, 31]);
 
-const Number = Object.freeze({
+const NUMBER = Object.freeze({
   firstDay: 1,
   christmasDay: 25,
   endDay: 31,
   maxTotalMenuCount: 20,
   orderQuantity: 1,
+  weekdayDivisionFrom: 0,
+  weekdayDivisionTo: 4,
 });
 
 export {
@@ -75,5 +77,5 @@ export {
   MENU_PRICES,
   BENEFIT_MESSAGE,
   SPECIAL_DAY,
-  Number,
+  NUMBER,
 };
