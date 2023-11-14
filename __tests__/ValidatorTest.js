@@ -1,6 +1,8 @@
 import InputValidator from '../src/InputValidator.js';
 import { ERROR_MESSAGE } from '../src/constants.js';
 
+const testMenuCountInput = (order) => InputValidator.menuCountInput(order);
+
 describe('InputValidator에 대한 Test', () => {
   describe('방문 날짜 입력 test', () => {
     it('1 이상 31 이하의 숫자가 아닌 경우 에러를 반환한다.', () => {
@@ -42,8 +44,4 @@ describe('InputValidator에 대한 Test', () => {
       expect(() => testMenuCountInput(orderExceedingMaxCount)).toThrow(ERROR_MESSAGE.invalidOrder);
     });
   });
-
-  function testMenuCountInput(order) {
-    return InputValidator.menuCountInput(order);
-  }
 });
