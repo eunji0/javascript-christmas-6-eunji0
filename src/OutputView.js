@@ -22,7 +22,7 @@ const OutputView = {
 
   printGiveawayMenu(beforeDiscountTotalPrice) {
     Console.print(PRINT_MESSAGE.giveawayMenu);
-    if (beforeDiscountTotalPrice > 120_000) {
+    if (beforeDiscountTotalPrice >= 120_000) {
       return Console.print(PRINT_MESSAGE.giveChampagne);
     }
     return Console.print(PRINT_MESSAGE.doesNotExist);
@@ -30,11 +30,16 @@ const OutputView = {
 
   printBenefitDetails(discountCalculator, beforeDiscountTotalPrice) {
     Console.print(PRINT_MESSAGE.benefitDetails);
-    this.printChristmasDDayDiscount(discountCalculator.christmasDDayDiscount);
-    this.printWeekdayDiscount(discountCalculator.weekdayDiscount);
-    this.printWeekendDiscount(discountCalculator.weekendDiscount);
-    this.printSpecialDiscount(discountCalculator.specialDiscount);
-    this.printGiftMenuPrice(beforeDiscountTotalPrice);
+    if (discountCalculator.totalBenefitPrice === 0) {
+      Console.print(PRINT_MESSAGE.doesNotExist);
+    }
+    if (discountCalculator.totalBenefitPrice > 0) {
+      this.printChristmasDDayDiscount(discountCalculator.christmasDDayDiscount);
+      this.printWeekdayDiscount(discountCalculator.weekdayDiscount);
+      this.printWeekendDiscount(discountCalculator.weekendDiscount);
+      this.printSpecialDiscount(discountCalculator.specialDiscount);
+      this.printGiftMenuPrice(beforeDiscountTotalPrice);
+    }
   },
 
   printGiftMenuPrice(beforeDiscountTotalPrice) {

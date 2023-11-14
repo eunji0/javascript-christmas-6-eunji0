@@ -31,12 +31,7 @@ const discountCalculatorHandler = async (visitDate, orderDetails) =>
   ErrorHandlerAndRetry(
     async () => {
       const discountCalculator = new DiscountCalculator(visitDate, orderDetails);
-      // const totalBenefitPrice = discountCalculator.calculateDiscounts(visitDate, orderDetails);
-
-      return {
-        discountCalculator,
-        // totalBenefitPrice,
-      };
+      return { discountCalculator };
     },
     async () => discountCalculatorHandler(visitDate, orderDetails),
   );
