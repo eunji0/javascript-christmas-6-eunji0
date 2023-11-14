@@ -1,5 +1,5 @@
 import { NUMBER, MENU_LIST, SPECIAL_DAY } from './constants.js';
-import { calculateIndex, isInRange, isIndexInRange, isValidDay, parseDay } from './utils.js';
+import { calculateIndex, isIndexInRange, isValidDay, isWeekdayOrWeekend } from './utils.js';
 
 class DiscountCalculator {
   constructor(visitDate, orderDetails) {
@@ -33,9 +33,9 @@ class DiscountCalculator {
 
   calculateDiscountChristmas(visitDate) {
     const discountSchedule = this.generateDiscountChristmas();
-    const index = calculateIndex(visitDate, 1);
+    const index = calculateIndex(visitDate, 0);
 
-    return isIndexInRange(index, discountSchedule.length) ? discountSchedule[index - 1] : 0;
+    return isIndexInRange(index, discountSchedule.length) ? discountSchedule[index] : 0;
   }
 
   generateDiscountChristmas() {
@@ -48,20 +48,14 @@ class DiscountCalculator {
   }
 
   calculateWeekdayDiscount(visitDate, orderDetails) {
-    if (
-      this.isWeekdayOrWeekend(visitDate, NUMBER.weekdayDivisionFrom, NUMBER.weekdayDivisionTo) &&
-      this.isMenuOrdered(orderDetails, MENU_LIST.디저트)
-    ) {
+    if (!isWeekdayOrWeekend(visitDate) && this.isMenuOrdered(orderDetails, MENU_LIST.디저트)) {
       return this.calculateMenuDiscount(orderDetails, MENU_LIST.디저트, NUMBER.menuDiscount);
     }
     return 0;
   }
 
   calculateWeekendDiscount(visitDate, orderDetails) {
-    if (
-      !this.isWeekdayOrWeekend(visitDate, NUMBER.weekdayDivisionFrom, NUMBER.weekdayDivisionTo) &&
-      this.isMenuOrdered(orderDetails, MENU_LIST.메인)
-    ) {
+    if (isWeekdayOrWeekend(visitDate) && this.isMenuOrdered(orderDetails, MENU_LIST.메인)) {
       return this.calculateMenuDiscount(orderDetails, MENU_LIST.메인, NUMBER.menuDiscount);
     }
     return 0;
@@ -78,14 +72,6 @@ class DiscountCalculator {
 
       return menuList.includes(menu) ? discount + discountRate * quantity : discount;
     }, 0);
-  }
-
-  isWeekdayOrWeekend(visitDate, startDay, endDay) {
-    const dayNumber = parseDay(visitDate);
-    return (
-      isValidDay(visitDate, NUMBER.firstDay, NUMBER.endDay) &&
-      isInRange(dayNumber, startDay, endDay)
-    );
   }
 
   isMenuOrdered(orderDetails, menuList) {

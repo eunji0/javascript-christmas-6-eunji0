@@ -1,3 +1,5 @@
+import { NUMBER } from './constants';
+
 const isIndexInRange = (index, maxIndex) => index >= 0 && index < maxIndex;
 
 const parseDay = (visitDate) => parseInt(visitDate, 10);
@@ -11,9 +13,13 @@ const isValidDay = (visitDate, minDay, maxDay) => {
   return isInRange(dayNumber, minDay, maxDay);
 };
 
-const isWeekdayOrWeekend = (visitDate, startDay, endDay) => {
+const isWeekdayOrWeekend = (visitDate) => {
   const dayNumber = parseDay(visitDate);
-  return isValidDay(visitDate, startDay, endDay) && isInRange(dayNumber, startDay, endDay);
+  const isWeekend =
+    dayNumber % NUMBER.oneWeek === NUMBER.weekendDivisionFrom ||
+    dayNumber % NUMBER.oneWeek === NUMBER.weekendDivisionTo;
+
+  return isWeekend;
 };
 
 export { isIndexInRange, parseDay, calculateIndex, isInRange, isValidDay, isWeekdayOrWeekend };

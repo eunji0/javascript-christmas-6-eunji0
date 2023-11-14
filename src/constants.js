@@ -65,11 +65,12 @@ const NUMBER = Object.freeze({
   endDay: 31,
   maxTotalMenuCount: 20,
   orderQuantity: 1,
-  weekdayDivisionFrom: 0,
-  weekdayDivisionTo: 4,
+  weekendDivisionFrom: 1,
+  weekendDivisionTo: 2,
   initialDiscount: 1000,
   menuDiscount: 2023,
   discountedPriceAmount: 100,
+  oneWeek: 7,
 });
 
 const BADGE_STANDARD_PRICE = Object.freeze({
