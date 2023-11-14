@@ -8,7 +8,6 @@ class DiscountCalculator {
     this.weekendDiscount = 0;
     this.specialDiscount = 0;
     this.totalBenefitPrice = 0;
-
     this.calculateDiscounts(visitDate, orderDetails);
   }
 
@@ -44,7 +43,7 @@ class DiscountCalculator {
 
     return Array.from(
       { length: numberOfDays },
-      (_, index) => NUMBER.INITIAL_DISCOUNT + NUMBER.DISCOUNTED_PRICE_AMOUNT * index,
+      (_, index) => NUMBER.initialDiscount + NUMBER.discountedPriceAmount * index,
     );
   }
 
@@ -69,7 +68,7 @@ class DiscountCalculator {
   }
 
   calculateSpecialDiscount(visitDate) {
-    return SPECIAL_DAY.includes(visitDate) ? Number.initialDiscount : 0;
+    return SPECIAL_DAY.includes(visitDate) ? NUMBER.initialDiscount : 0;
   }
 
   calculateMenuDiscount(orderDetails, menuList, discountRate) {
