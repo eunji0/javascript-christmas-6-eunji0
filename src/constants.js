@@ -67,6 +67,9 @@ const NUMBER = Object.freeze({
   orderQuantity: 1,
   weekdayDivisionFrom: 0,
   weekdayDivisionTo: 4,
+  initialDiscount: 1000,
+  menuDiscount: 2023,
+  discountedPriceAmount: 100,
 });
 
 export {

@@ -1,119 +1,14 @@
 import { NUMBER, MENU_LIST, SPECIAL_DAY } from './constants.js';
-
-// class DiscountCalculator {
-//   constructor(visitDate, orderDetails) {
-//     this.calculateDiscounts(visitDate, orderDetails);
-//   }
-
-//   calculateDiscounts(visitDate, orderDetails) {
-//     this.christmasDDayDiscount = this.calculateChristmasDDayDiscount(visitDate);
-//     this.weekdayDiscount = this.calculateWeekdayDiscount(visitDate, orderDetails);
-//     this.weekendDiscount = this.calculateWeekendDiscount(visitDate, orderDetails);
-//     this.specialDiscount = this.calculateSpecialDiscount(visitDate);
-
-//     this.totalBenefitPrice =
-//       this.christmasDDayDiscount +
-//       this.weekdayDiscount +
-//       this.weekendDiscount +
-//       this.specialDiscount;
-//   }
-
-//   calculateChristmasDDayDiscount(visitDate) {
-//     if (this.isValidDay(visitDate, NUMBER.firstDay, NUMBER.christmasDay)) {
-//       return this.calculateDiscountChristmas(visitDate);
-//     }
-//     return 0;
-//   }
-
-//   calculateDiscountChristmas(visitDate) {
-//     const discountSchedule = this.generateDiscountChristmas();
-//     const index = this.calculateIndex(visitDate, 1);
-
-//     return this.isIndexInRange(index, discountSchedule.length) ? discountSchedule[index - 1] : 0;
-//   }
-
-//   generateDiscountChristmas() {
-//     const initialDiscount = 1000;
-//     const commonDifference = 100;
-//     const numberOfDays = NUMBER.christmasDay;
-
-//     return Array.from(
-//       { length: numberOfDays },
-//       (_, index) => initialDiscount + commonDifference * index,
-//     );
-//   }
-
-//   calculateWeekdayDiscount(visitDate, orderDetails) {
-//     if (
-//       this.isWeekdayOrWeekend(visitDate, NUMBER.weekdayDivisionFrom, NUMBER.weekdayDivisionTo) &&
-//       this.isMenuOrdered(orderDetails, MENU_LIST.디저트)
-//     ) {
-//       return this.calculateMenuDiscount(orderDetails, MENU_LIST.디저트, 2023);
-//     }
-//     return 0;
-//   }
-
-//   calculateWeekendDiscount(visitDate, orderDetails) {
-//     if (
-//       !this.isWeekdayOrWeekend(visitDate, NUMBER.weekdayDivisionFrom, NUMBER.weekdayDivisionTo) &&
-//       this.isMenuOrdered(orderDetails, MENU_LIST.메인)
-//     ) {
-//       return this.calculateMenuDiscount(orderDetails, MENU_LIST.메인, 2023);
-//     }
-//     return 0;
-//   }
-
-//   calculateSpecialDiscount(visitDate) {
-//     return SPECIAL_DAY.includes(visitDate) ? 1000 : 0;
-//   }
-
-//   calculateMenuDiscount(orderDetails, menuList, discountRate) {
-//     return orderDetails.reduce((discount, orderDetail) => {
-//       const [menu, quantityString] = orderDetail.split(' ').map((item) => item.trim());
-//       const quantity = parseInt(quantityString, 10);
-
-//       return menuList.includes(menu) ? discount + discountRate * quantity : discount;
-//     }, 0);
-//   }
-
-//   isWeekdayOrWeekend(visitDate, startDay, endDay) {
-//     const dayNumber = this.parseDay(visitDate);
-//     return (
-//       this.isValidDay(visitDate, NUMBER.firstDay, NUMBER.endDay) &&
-//       this.isInRange(dayNumber, startDay, endDay)
-//     );
-//   }
-
-//   isMenuOrdered(orderDetails, menuList) {
-//     return orderDetails.some((item) => menuList.includes(item.split(' ')[0]));
-//   }
-
-//   isValidDay(visitDate, minDay, maxDay) {
-//     const dayNumber = this.parseDay(visitDate);
-//     return this.isInRange(dayNumber, minDay, maxDay);
-//   }
-
-//   isIndexInRange(index, maxIndex) {
-//     return index >= 0 && index < maxIndex;
-//   }
-
-//   parseDay(visitDate) {
-//     return parseInt(visitDate, 10);
-//   }
-
-//   calculateIndex(visitDate, offset) {
-//     return parseInt(visitDate, 10) + offset - 1;
-//   }
-
-//   isInRange(value, minValue, maxValue) {
-//     return value >= minValue && value <= maxValue;
-//   }
-// }
-
-// export default DiscountCalculator;
+import { calculateIndex, isInRange, isIndexInRange, isValidDay, parseDay } from './utils.js';
 
 class DiscountCalculator {
   constructor(visitDate, orderDetails) {
+    this.christmasDDayDiscount = 0;
+    this.weekdayDiscount = 0;
+    this.weekendDiscount = 0;
+    this.specialDiscount = 0;
+    this.totalBenefitPrice = 0;
+
     this.calculateDiscounts(visitDate, orderDetails);
   }
 
@@ -131,7 +26,7 @@ class DiscountCalculator {
   }
 
   calculateChristmasDDayDiscount(visitDate) {
-    if (this.isValidDay(visitDate, NUMBER.firstDay, NUMBER.christmasDay)) {
+    if (isValidDay(visitDate, NUMBER.firstDay, NUMBER.christmasDay)) {
       return this.calculateDiscountChristmas(visitDate);
     }
     return 0;
@@ -139,19 +34,17 @@ class DiscountCalculator {
 
   calculateDiscountChristmas(visitDate) {
     const discountSchedule = this.generateDiscountChristmas();
-    const index = this.calculateIndex(visitDate, 1);
+    const index = calculateIndex(visitDate, 1);
 
-    return this.isIndexInRange(index, discountSchedule.length) ? discountSchedule[index - 1] : 0;
+    return isIndexInRange(index, discountSchedule.length) ? discountSchedule[index - 1] : 0;
   }
 
   generateDiscountChristmas() {
-    const initialDiscount = 1000;
-    const commonDifference = 100;
     const numberOfDays = NUMBER.christmasDay;
 
     return Array.from(
       { length: numberOfDays },
-      (_, index) => initialDiscount + commonDifference * index,
+      (_, index) => NUMBER.INITIAL_DISCOUNT + NUMBER.DISCOUNTED_PRICE_AMOUNT * index,
     );
   }
 
@@ -160,7 +53,7 @@ class DiscountCalculator {
       this.isWeekdayOrWeekend(visitDate, NUMBER.weekdayDivisionFrom, NUMBER.weekdayDivisionTo) &&
       this.isMenuOrdered(orderDetails, MENU_LIST.디저트)
     ) {
-      return this.calculateMenuDiscount(orderDetails, MENU_LIST.디저트, 2023);
+      return this.calculateMenuDiscount(orderDetails, MENU_LIST.디저트, NUMBER.menuDiscount);
     }
     return 0;
   }
@@ -170,13 +63,13 @@ class DiscountCalculator {
       !this.isWeekdayOrWeekend(visitDate, NUMBER.weekdayDivisionFrom, NUMBER.weekdayDivisionTo) &&
       this.isMenuOrdered(orderDetails, MENU_LIST.메인)
     ) {
-      return this.calculateMenuDiscount(orderDetails, MENU_LIST.메인, 2023);
+      return this.calculateMenuDiscount(orderDetails, MENU_LIST.메인, NUMBER.menuDiscount);
     }
     return 0;
   }
 
   calculateSpecialDiscount(visitDate) {
-    return SPECIAL_DAY.includes(visitDate) ? 1000 : 0;
+    return SPECIAL_DAY.includes(visitDate) ? Number.initialDiscount : 0;
   }
 
   calculateMenuDiscount(orderDetails, menuList, discountRate) {
@@ -189,36 +82,15 @@ class DiscountCalculator {
   }
 
   isWeekdayOrWeekend(visitDate, startDay, endDay) {
-    const dayNumber = this.parseDay(visitDate);
+    const dayNumber = parseDay(visitDate);
     return (
-      this.isValidDay(visitDate, NUMBER.firstDay, NUMBER.endDay) &&
-      this.isInRange(dayNumber, startDay, endDay)
+      isValidDay(visitDate, NUMBER.firstDay, NUMBER.endDay) &&
+      isInRange(dayNumber, startDay, endDay)
     );
   }
 
   isMenuOrdered(orderDetails, menuList) {
     return orderDetails.some((item) => menuList.includes(item.split(' ')[0]));
-  }
-
-  isValidDay(visitDate, minDay, maxDay) {
-    const dayNumber = this.parseDay(visitDate);
-    return this.isInRange(dayNumber, minDay, maxDay);
-  }
-
-  isIndexInRange(index, maxIndex) {
-    return index >= 0 && index < maxIndex;
-  }
-
-  parseDay(visitDate) {
-    return parseInt(visitDate, 10);
-  }
-
-  calculateIndex(visitDate, offset) {
-    return parseInt(visitDate, 10) + offset - 1;
-  }
-
-  isInRange(value, minValue, maxValue) {
-    return value >= minValue && value <= maxValue;
   }
 }
 
