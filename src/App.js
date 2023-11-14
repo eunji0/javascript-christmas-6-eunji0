@@ -1,5 +1,5 @@
 import OutputView from './OutputView.js';
-import { MENU_PRICES } from './constants.js';
+import { EVENT_APPLICATION_PRICE, MENU_PRICES } from './constants.js';
 import { discountCalculatorHandler, orderProcessorHandler, visitDateHandler } from './handler.js';
 
 class App {
@@ -35,9 +35,13 @@ class App {
   }
 
   async calculateAndPrintBenefits(orderDetails, beforeDiscountTotalPrice) {
-    const { discountCalculator } = await discountCalculatorHandler(this.#visitDate, orderDetails);
-    OutputView.printBenefitDetails(discountCalculator, beforeDiscountTotalPrice);
-    this.#totalBenefitPrice = discountCalculator.totalBenefitPrice;
+    if (beforeDiscountTotalPrice >= EVENT_APPLICATION_PRICE) {
+      const { discountCalculator } = await discountCalculatorHandler(this.#visitDate, orderDetails);
+      OutputView.printBenefitDetails(discountCalculator, beforeDiscountTotalPrice);
+      this.#totalBenefitPrice = discountCalculator.totalBenefitPrice;
+      return;
+    }
+    OutputView.printNotExist();
   }
 
   printFinalResults(beforeDiscountTotalPrice) {

@@ -115,6 +115,7 @@ const OutputView = {
   },
 
   printNotExist() {
+    Console.print(PRINT_MESSAGE.benefitDetails);
     Console.print(PRINT_MESSAGE.doesNotExist);
   },
 };
