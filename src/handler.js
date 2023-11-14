@@ -1,3 +1,4 @@
+import DiscountCalculator from './DiscountCalculator.js';
 import InputView from './InputView.js';
 import OrderProcessor from './OrderProcessor.js';
 import OutputView from './OutputView.js';
@@ -26,7 +27,21 @@ const visitDateHandler = async () =>
     return response;
   }, visitDateHandler);
 
-export { orderProcessorHandler, visitDateHandler };
+const discountCalculatorHandler = async (visitDate, orderDetails) =>
+  ErrorHandlerAndRetry(
+    async () => {
+      const discountCalculator = new DiscountCalculator(visitDate, orderDetails);
+      // const totalBenefitPrice = discountCalculator.calculateDiscounts(visitDate, orderDetails);
+
+      return {
+        discountCalculator,
+        // totalBenefitPrice,
+      };
+    },
+    async () => discountCalculatorHandler(visitDate, orderDetails),
+  );
+
+export { orderProcessorHandler, visitDateHandler, discountCalculatorHandler };
 
 // const discountCalculatorHandler = async () =>
 //   ErrorHandlerAndRetry(async () => {

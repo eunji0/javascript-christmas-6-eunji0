@@ -1,12 +1,11 @@
 import OutputView from './OutputView.js';
-import DiscountCalculator from './DiscountCalculator.js';
-import { orderProcessorHandler, visitDateHandler } from './handler.js';
+import { MENU_PRICES } from './constants.js';
+import { discountCalculatorHandler, orderProcessorHandler, visitDateHandler } from './handler.js';
 
 class App {
   #menuOrder;
 
   constructor() {
-    this.totalBenefitPrice = 0;
     this.expectedPrice = 0;
   }
 
@@ -24,47 +23,29 @@ class App {
       OutputView.printBeforeDiscountTotalOrderAmount(beforeDiscountTotalPrice);
       OutputView.printGiveawayMenu(beforeDiscountTotalPrice);
 
-      this.printBenefitDetails(visitDate, orderDetails);
+      const { discountCalculator } = await discountCalculatorHandler(visitDate, orderDetails);
+      OutputView.printBenefitDetails(discountCalculator, beforeDiscountTotalPrice);
+      this.totalBenefitPrice = discountCalculator.totalBenefitPrice;
 
-      const discountCalculator = new DiscountCalculator();
-      this.totalBenefitPrice = discountCalculator.calculateDiscounts(visitDate, orderDetails);
-
-      OutputView.printTotalBenefitAmount(this.totalBenefitPrice);
+      OutputView.printTotalBenefitAmount(
+        this.totalBenefitPrice + this.addGiftEvent(beforeDiscountTotalPrice),
+      );
       OutputView.printAfterDiscountEstimatedPaymentAmount(
         beforeDiscountTotalPrice - this.totalBenefitPrice,
       );
-      OutputView.printDecemberEventBadge(this.totalBenefitPrice);
+      OutputView.printDecemberEventBadge(
+        this.totalBenefitPrice + this.addGiftEvent(beforeDiscountTotalPrice),
+      );
     } catch (error) {
       OutputView.printError(error);
     }
   }
 
-  printBenefitDetails(visitDate, orderDetails) {
-    const discountCalculator = new DiscountCalculator();
-    OutputView.printBenefitDetails(visitDate);
-
-    if (
-      !discountCalculator.calculateChristmasDDayDiscount(visitDate) &&
-      !discountCalculator.calculateWeekdayDiscount(visitDate, orderDetails) &&
-      !discountCalculator.calculateWeekendDiscount(visitDate, orderDetails) &&
-      !discountCalculator.calculateSpecialDiscount(visitDate)
-    ) {
-      OutputView.printNotExist();
+  addGiftEvent(beforeDiscountTotalPrice) {
+    if (beforeDiscountTotalPrice >= 120_000) {
+      return MENU_PRICES.샴페인;
     }
-
-    OutputView.printChristmasDDayDiscount(
-      discountCalculator.calculateChristmasDDayDiscount(visitDate),
-    );
-
-    OutputView.printWeekdayDiscount(
-      discountCalculator.calculateWeekdayDiscount(visitDate, orderDetails),
-    );
-
-    OutputView.printWeekendDiscount(
-      discountCalculator.calculateWeekendDiscount(visitDate, orderDetails),
-    );
-
-    OutputView.printSpecialDiscount(discountCalculator.calculateSpecialDiscount(visitDate));
+    return 0;
   }
 }
 

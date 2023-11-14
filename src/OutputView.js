@@ -1,5 +1,5 @@
 import { Console } from '@woowacourse/mission-utils';
-import { BENEFIT_MESSAGE, EVENT_BADGE, PRINT_MESSAGE } from './constants.js';
+import { BENEFIT_MESSAGE, EVENT_BADGE, MENU_PRICES, PRINT_MESSAGE } from './constants.js';
 
 const OutputView = {
   printGreeting() {
@@ -28,14 +28,19 @@ const OutputView = {
     return Console.print(PRINT_MESSAGE.doesNotExist);
   },
 
-  printBenefitDetails(discounts) {
-    const { christmasDDayDiscount, weekdayDiscount, weekendDiscount, specialDiscount } = discounts;
-
+  printBenefitDetails(discountCalculator, beforeDiscountTotalPrice) {
     Console.print(PRINT_MESSAGE.benefitDetails);
-    this.printChristmasDDayDiscount(christmasDDayDiscount);
-    this.printWeekdayDiscount(weekdayDiscount);
-    this.printWeekendDiscount(weekendDiscount);
-    this.printSpecialDiscount(specialDiscount);
+    this.printChristmasDDayDiscount(discountCalculator.christmasDDayDiscount);
+    this.printWeekdayDiscount(discountCalculator.weekdayDiscount);
+    this.printWeekendDiscount(discountCalculator.weekendDiscount);
+    this.printSpecialDiscount(discountCalculator.specialDiscount);
+    this.printGiftMenuPrice(beforeDiscountTotalPrice);
+  },
+
+  printGiftMenuPrice(beforeDiscountTotalPrice) {
+    if (beforeDiscountTotalPrice >= 120_000) {
+      Console.print(`${BENEFIT_MESSAGE.giveEvent} -${MENU_PRICES.샴페인.toLocaleString()}원`);
+    }
   },
 
   printChristmasDDayDiscount(christmasDDayDiscount) {
