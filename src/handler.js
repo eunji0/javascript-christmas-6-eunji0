@@ -8,9 +8,7 @@ const ErrorHandlerAndRetry = async (handler, retry) => {
     return await handler();
   } catch (err) {
     OutputView.printError(err);
-    if (err) {
-      return await retry();
-    }
+    if (err) return retry();
     throw err;
   }
 };
@@ -37,9 +35,3 @@ const discountCalculatorHandler = async (visitDate, orderDetails) =>
   );
 
 export { orderProcessorHandler, visitDateHandler, discountCalculatorHandler };
-
-// const discountCalculatorHandler = async () =>
-//   ErrorHandlerAndRetry(async () => {
-//     const response = await InputView.visitDate();
-//     return new DiscountCalculator(response);
-//   }, discountCalculatorHandler);
