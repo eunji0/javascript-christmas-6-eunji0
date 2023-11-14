@@ -1,5 +1,5 @@
-import InputValidator from '../src/InputValidator';
-import { ERROR_MESSAGE } from '../src/constants';
+import InputValidator from '../src/InputValidator.js';
+import { ERROR_MESSAGE } from '../src/constants.js';
 
 describe('InputValidator에 대한 Test', () => {
   describe('방문 날짜 입력 test', () => {
