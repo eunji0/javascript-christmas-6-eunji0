@@ -4,19 +4,8 @@ import InputValidator from './InputValidator.js';
 
 const InputView = {
   async getInputValidate(userInput, validate) {
-    let input;
-    let isValidInput = false;
-
-    while (!isValidInput) {
-      try {
-        input = await userInput();
-        validate(input);
-        isValidInput = true;
-      } catch (error) {
-        Console.print(error.message);
-      }
-    }
-
+    const input = await userInput();
+    validate(input);
     return input;
   },
 
