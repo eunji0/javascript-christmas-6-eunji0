@@ -72,6 +72,14 @@ const NUMBER = Object.freeze({
   discountedPriceAmount: 100,
 });
 
+const BADGE_STANDARD_PRICE = Object.freeze({
+  santaBadge: 20_000,
+  treeBadge: 10_000,
+  starBadge: 5_000,
+});
+
+const GIFT_EVENT_STANDARD = 120_000;
+
 export {
   ERROR_MESSAGE,
   PRINT_MESSAGE,
@@ -81,4 +89,6 @@ export {
   BENEFIT_MESSAGE,
   SPECIAL_DAY,
   NUMBER,
+  BADGE_STANDARD_PRICE,
+  GIFT_EVENT_STANDARD,
 };

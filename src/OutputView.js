@@ -1,5 +1,12 @@
 import { Console } from '@woowacourse/mission-utils';
-import { BENEFIT_MESSAGE, EVENT_BADGE, MENU_PRICES, PRINT_MESSAGE } from './constants.js';
+import {
+  BADGE_STANDARD_PRICE,
+  BENEFIT_MESSAGE,
+  EVENT_BADGE,
+  MENU_PRICES,
+  PRINT_MESSAGE,
+  GIFT_EVENT_STANDARD,
+} from './constants.js';
 
 const OutputView = {
   printGreeting() {
@@ -22,30 +29,26 @@ const OutputView = {
 
   printGiveawayMenu(beforeDiscountTotalPrice) {
     Console.print(PRINT_MESSAGE.giveawayMenu);
-    if (beforeDiscountTotalPrice >= 120_000) {
-      return Console.print(PRINT_MESSAGE.giveChampagne);
-    }
-    return Console.print(PRINT_MESSAGE.doesNotExist);
+    Console.print(
+      beforeDiscountTotalPrice >= GIFT_EVENT_STANDARD
+        ? PRINT_MESSAGE.giveChampagne
+        : PRINT_MESSAGE.doesNotExist,
+    );
   },
 
   printBenefitDetails(discountCalculator, beforeDiscountTotalPrice) {
     Console.print(PRINT_MESSAGE.benefitDetails);
+
     if (discountCalculator.totalBenefitPrice === 0) {
       Console.print(PRINT_MESSAGE.doesNotExist);
+      return;
     }
-    if (discountCalculator.totalBenefitPrice > 0) {
-      this.printChristmasDDayDiscount(discountCalculator.christmasDDayDiscount);
-      this.printWeekdayDiscount(discountCalculator.weekdayDiscount);
-      this.printWeekendDiscount(discountCalculator.weekendDiscount);
-      this.printSpecialDiscount(discountCalculator.specialDiscount);
-      this.printGiftMenuPrice(beforeDiscountTotalPrice);
-    }
-  },
 
-  printGiftMenuPrice(beforeDiscountTotalPrice) {
-    if (beforeDiscountTotalPrice >= 120_000) {
-      Console.print(`${BENEFIT_MESSAGE.giveEvent} -${MENU_PRICES.샴페인.toLocaleString()}원`);
-    }
+    this.printChristmasDDayDiscount(discountCalculator.christmasDDayDiscount);
+    this.printWeekdayDiscount(discountCalculator.weekdayDiscount);
+    this.printWeekendDiscount(discountCalculator.weekendDiscount);
+    this.printSpecialDiscount(discountCalculator.specialDiscount);
+    this.printGiftMenuPrice(beforeDiscountTotalPrice);
   },
 
   printChristmasDDayDiscount(christmasDDayDiscount) {
@@ -74,13 +77,19 @@ const OutputView = {
     }
   },
 
+  printGiftMenuPrice(beforeDiscountTotalPrice) {
+    if (beforeDiscountTotalPrice >= GIFT_EVENT_STANDARD) {
+      Console.print(`${BENEFIT_MESSAGE.giveEvent} -${MENU_PRICES.샴페인.toLocaleString()}원`);
+    }
+  },
+
   printTotalBenefitAmount(totalBenefitPrice) {
     Console.print(PRINT_MESSAGE.totalBenefitAmount);
-    if (totalBenefitPrice === 0) {
-      Console.print(`${totalBenefitPrice}원`);
-    } else {
-      Console.print(`-${totalBenefitPrice.toLocaleString()}원`);
-    }
+    Console.print(
+      totalBenefitPrice === 0
+        ? `${totalBenefitPrice}원`
+        : `-${totalBenefitPrice.toLocaleString()}원`,
+    );
   },
 
   printAfterDiscountEstimatedPaymentAmount(expectedPrice) {
@@ -90,19 +99,15 @@ const OutputView = {
 
   printDecemberEventBadge(totalBenefitPrice) {
     Console.print(PRINT_MESSAGE.decemberEventBadge);
-    if (totalBenefitPrice >= 20_000) {
-      return Console.print(EVENT_BADGE.santa);
-    }
 
-    if (totalBenefitPrice >= 10_000) {
-      return Console.print(EVENT_BADGE.tree);
-    }
+    const events = [
+      { threshold: BADGE_STANDARD_PRICE.santaBadge, badge: EVENT_BADGE.santa },
+      { threshold: BADGE_STANDARD_PRICE.treeBadge, badge: EVENT_BADGE.tree },
+      { threshold: BADGE_STANDARD_PRICE.starBadge, badge: EVENT_BADGE.star },
+    ];
 
-    if (totalBenefitPrice >= 10_000) {
-      return Console.print(EVENT_BADGE.star);
-    }
-
-    return Console.print(PRINT_MESSAGE.doesNotExist);
+    const matchingEvent = events.find((event) => totalBenefitPrice >= event.threshold);
+    Console.print(matchingEvent ? matchingEvent.badge : PRINT_MESSAGE.doesNotExist);
   },
 
   printError(error) {
