@@ -3,49 +3,56 @@ import { MENU_PRICES } from './constants.js';
 import { discountCalculatorHandler, orderProcessorHandler, visitDateHandler } from './handler.js';
 
 class App {
+  #visitDate;
+
   #menuOrder;
 
-  constructor() {
-    this.expectedPrice = 0;
-  }
+  #totalBenefitPrice = 0;
 
   async run() {
     try {
       OutputView.printGreeting();
-
-      const visitDate = await visitDateHandler();
-      this.#menuOrder = await orderProcessorHandler();
-      OutputView.printVisitDate(visitDate);
-
+      await this.initializeOrderDetails();
       const { orderDetails, beforeDiscountTotalPrice } = this.#menuOrder.orderAndPrice;
-
-      OutputView.printOrderMenu(orderDetails);
-      OutputView.printBeforeDiscountTotalOrderAmount(beforeDiscountTotalPrice);
-      OutputView.printGiveawayMenu(beforeDiscountTotalPrice);
-
-      const { discountCalculator } = await discountCalculatorHandler(visitDate, orderDetails);
-      OutputView.printBenefitDetails(discountCalculator, beforeDiscountTotalPrice);
-      this.totalBenefitPrice = discountCalculator.totalBenefitPrice;
-
-      OutputView.printTotalBenefitAmount(
-        this.totalBenefitPrice + this.addGiftEvent(beforeDiscountTotalPrice),
-      );
-      OutputView.printAfterDiscountEstimatedPaymentAmount(
-        beforeDiscountTotalPrice - this.totalBenefitPrice,
-      );
-      OutputView.printDecemberEventBadge(
-        this.totalBenefitPrice + this.addGiftEvent(beforeDiscountTotalPrice),
-      );
+      this.printOrderResults(orderDetails, beforeDiscountTotalPrice);
+      await this.calculateAndPrintBenefits(orderDetails, beforeDiscountTotalPrice);
+      this.printFinalResults(beforeDiscountTotalPrice);
     } catch (error) {
       OutputView.printError(error);
     }
   }
 
+  async initializeOrderDetails() {
+    this.#visitDate = await visitDateHandler();
+    this.#menuOrder = await orderProcessorHandler();
+    OutputView.printVisitDate(this.#visitDate);
+  }
+
+  printOrderResults(orderDetails, beforeDiscountTotalPrice) {
+    OutputView.printOrderMenu(orderDetails);
+    OutputView.printBeforeDiscountTotalOrderAmount(beforeDiscountTotalPrice);
+    OutputView.printGiveawayMenu(beforeDiscountTotalPrice);
+  }
+
+  async calculateAndPrintBenefits(orderDetails, beforeDiscountTotalPrice) {
+    const { discountCalculator } = await discountCalculatorHandler(this.#visitDate, orderDetails);
+    OutputView.printBenefitDetails(discountCalculator, beforeDiscountTotalPrice);
+    this.#totalBenefitPrice = discountCalculator.totalBenefitPrice;
+  }
+
+  printFinalResults(beforeDiscountTotalPrice) {
+    const totalWithGiftEvent =
+      this.#totalBenefitPrice + this.addGiftEvent(beforeDiscountTotalPrice);
+
+    OutputView.printTotalBenefitAmount(totalWithGiftEvent);
+    OutputView.printAfterDiscountEstimatedPaymentAmount(
+      beforeDiscountTotalPrice - this.#totalBenefitPrice,
+    );
+    OutputView.printDecemberEventBadge(totalWithGiftEvent);
+  }
+
   addGiftEvent(beforeDiscountTotalPrice) {
-    if (beforeDiscountTotalPrice >= 120_000) {
-      return MENU_PRICES.샴페인;
-    }
-    return 0;
+    return beforeDiscountTotalPrice >= 120_000 ? MENU_PRICES.샴페인 : 0;
   }
 }
 
