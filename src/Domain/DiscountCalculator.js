@@ -22,21 +22,27 @@ class DiscountCalculator {
     this.#weekendDiscount = this.#calculateWeekendDiscount(visitDate, orderDetails);
     this.#specialDiscount = this.#calculateSpecialDiscount(visitDate);
 
+    this.#calculateTotalBenefitPrice();
+
+    return this.getDiscountDetails();
+  }
+
+  #calculateTotalBenefitPrice() {
     this.#totalBenefitPrice =
       this.#christmasDDayDiscount +
       this.#weekdayDiscount +
       this.#weekendDiscount +
       this.#specialDiscount;
+  }
 
-    const calculateDiscount = {
+  getDiscountDetails() {
+    return {
       totalBenefitPrice: this.#totalBenefitPrice,
       christmasDDayDiscount: this.#christmasDDayDiscount,
       weekdayDiscount: this.#weekdayDiscount,
       weekendDiscount: this.#weekendDiscount,
       specialDiscount: this.#specialDiscount,
     };
-
-    return calculateDiscount;
   }
 
   #calculateChristmasDDayDiscount(visitDate) {
