@@ -71,6 +71,30 @@
 
 - 모든 에러 메시지는 "[ERROR]"로 시작하도록 작성
 
+#### 프로젝트 구조
+
+├── src
+│ ├── index.js (메인 진입점)
+│ ├── App.js (크리스마스 프로모션 수행 및 실행)
+│ ├── View
+│ │ ├── InputView.js (사용자 입력 처리)
+│ │ └── OutputView.js (출력 관리)
+│ ├── Domain
+│ │ ├── OrderProcessor.js (주문 관련 로직)
+│ │ └── DiscountCalculator.js (이벤트 계산 관련 로직)
+│ ├── Utils
+│ │ ├── utils.js (보조 함수)
+│ │ ├── handler.js (에러처리와 재시도 관련 함수)
+│ │ └── constants.js (상수화 함수)
+│ ├── Validator
+│ │ ├── InputCheck.js (유효성관련 형식, 유형 및 제약 조건 관련 함수)
+│ │ └── InputValidator.js (입력에 대한 유효성 함수)
+├── tests
+│ ├── ApplicationTest.js
+│ ├── OrderProcessorTest.js
+│ ├── DiscountCalculatorTest.js
+│ └── InputViewTest.js
+
 #### 요구사항
 
 - main브랜치에 커밋한다.
