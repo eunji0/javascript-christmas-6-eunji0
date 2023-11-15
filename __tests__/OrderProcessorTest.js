@@ -11,11 +11,10 @@ describe('OrderProcessor에 대한 Test', () => {
       MENU_PRICES['티본스테이크'] * 1 + MENU_PRICES['바비큐립'] * 2 + MENU_PRICES['초코케이크'] * 3;
 
     const orderProcessor = createOrderProcessor(order);
+    const orderAndPrice = orderProcessor.processOrder(order);
 
-    expect(orderProcessor.orderAndPrice.orderDetails).toEqual(expectedOrderDetails);
-    expect(orderProcessor.orderAndPrice.beforeDiscountTotalPrice).toEqual(
-      expectedBeforeDiscountTotalPrice,
-    );
+    expect(orderAndPrice.orderDetails).toEqual(expectedOrderDetails);
+    expect(orderAndPrice.beforeDiscountTotalPrice).toEqual(expectedBeforeDiscountTotalPrice);
   });
 
   it('주문이 없는 경우, 주문 내역과 할인 전 총 주문 금액이 빈 값으로 초기화되어야 한다.', () => {
@@ -24,10 +23,9 @@ describe('OrderProcessor에 대한 Test', () => {
     const expectedBeforeDiscountTotalPrice = 0;
 
     const orderProcessor = createOrderProcessor(order);
+    const orderAndPrice = orderProcessor.processOrder(order);
 
-    expect(orderProcessor.orderAndPrice.orderDetails).toEqual(expectedOrderDetails);
-    expect(orderProcessor.orderAndPrice.beforeDiscountTotalPrice).toEqual(
-      expectedBeforeDiscountTotalPrice,
-    );
+    expect(orderAndPrice.orderDetails).toEqual(expectedOrderDetails);
+    expect(orderAndPrice.beforeDiscountTotalPrice).toEqual(expectedBeforeDiscountTotalPrice);
   });
 });
