@@ -1,5 +1,5 @@
 import OutputView from './View/OutputView.js';
-import { EVENT_APPLICATION_PRICE, MENU_PRICES } from './Utils/constants.js';
+import { EVENT_APPLICATION_PRICE, GIFT_EVENT_STANDARD, MENU_PRICES } from './Utils/constants.js';
 import {
   discountCalculatorHandler,
   orderProcessorHandler,
@@ -9,7 +9,7 @@ import {
 class App {
   #visitDate;
 
-  #menuOrder;
+  #orderProcessor;
 
   #totalBenefitPrice = 0;
 
@@ -17,7 +17,7 @@ class App {
     try {
       OutputView.printGreeting();
       await this.initializeOrderDetails();
-      const { orderDetails, beforeDiscountTotalPrice } = this.#menuOrder.orderAndPrice;
+      const { orderDetails, beforeDiscountTotalPrice } = this.#orderProcessor;
       this.printOrderResults(orderDetails, beforeDiscountTotalPrice);
       await this.calculateAndPrintBenefits(orderDetails, beforeDiscountTotalPrice);
       this.printFinalResults(beforeDiscountTotalPrice);
@@ -28,7 +28,7 @@ class App {
 
   async initializeOrderDetails() {
     this.#visitDate = await visitDateHandler();
-    this.#menuOrder = await orderProcessorHandler();
+    this.#orderProcessor = await orderProcessorHandler();
     OutputView.printVisitDate(this.#visitDate);
   }
 
@@ -60,7 +60,7 @@ class App {
   }
 
   addGiftEvent(beforeDiscountTotalPrice) {
-    return beforeDiscountTotalPrice >= 120_000 ? MENU_PRICES.샴페인 : 0;
+    return beforeDiscountTotalPrice >= GIFT_EVENT_STANDARD ? MENU_PRICES.샴페인 : 0;
   }
 }
 

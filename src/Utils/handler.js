@@ -16,7 +16,8 @@ const ErrorHandlerAndRetry = async (handler, retry) => {
 const orderProcessorHandler = async () =>
   ErrorHandlerAndRetry(async () => {
     const response = await InputView.orderMenuCount();
-    return new OrderProcessor(response);
+    const orderProcessor = new OrderProcessor(response);
+    return orderProcessor.processOrder(response);
   }, orderProcessorHandler);
 
 const visitDateHandler = async () =>
