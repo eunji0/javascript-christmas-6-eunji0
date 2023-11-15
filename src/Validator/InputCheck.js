@@ -6,7 +6,7 @@ const checkInputFormat = (input, errorMessage) => {
   }
 };
 
-const checkInputType = (input, errorMessage) => {
+const checkInputTypeNumber = (input, errorMessage) => {
   if (!/^\d+$/.test(input)) {
     throw new Error(`${ERROR_MESSAGE.errorText}${errorMessage}`);
   }
@@ -16,7 +16,7 @@ const checkValidateOrderItem = (orderItem) => {
   const [menu, quantity] = orderItem.split('-').map((item) => item.trim());
   const isMenuValid = Object.values(MENU_LIST).flat().includes(menu);
 
-  if (!isMenuValid || Number.isNaN(quantity) || quantity < NUMBER.orderQuantity) {
+  if (!isMenuValid || !Number.isSafeInteger(quantity) || quantity < NUMBER.orderQuantity) {
     throw new Error(`${ERROR_MESSAGE.errorText}${ERROR_MESSAGE.invalidOrder}`);
   }
 
@@ -43,7 +43,7 @@ const checkForOnlyDrink = (orderDetails) => {
 
 const checkValidDate = (date) => {
   checkInputFormat(date, ERROR_MESSAGE.invalidDate);
-  checkInputType(date, ERROR_MESSAGE.invalidDate);
+  checkInputTypeNumber(date, ERROR_MESSAGE.invalidDate);
 
   const numericDate = parseInt(date, 10);
   if (numericDate < NUMBER.firstDay || numericDate > NUMBER.endDay) {
@@ -70,7 +70,7 @@ const validateTotalItems = (quantity) => {
 
 const InputCheck = {
   checkInputFormat,
-  checkInputType,
+  checkInputTypeNumber,
   checkValidDate,
   checkValidOrder,
   validateTotalItems,
