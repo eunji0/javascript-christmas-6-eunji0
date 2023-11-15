@@ -1,4 +1,4 @@
-import OrderProcessor from '../src/OrderProcessor.js';
+import OrderProcessor from '../src/Domain/OrderProcessor.js';
 import { MENU_PRICES } from '../src/constants.js';
 
 describe('OrderProcessor에 대한 Test', () => {

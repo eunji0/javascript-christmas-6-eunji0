@@ -1,5 +1,5 @@
-import { NUMBER, MENU_LIST, SPECIAL_DAY } from './constants.js';
-import { calculateIndex, isIndexInRange, isValidDay, isWeekdayOrWeekend } from './utils.js';
+import { NUMBER, MENU_LIST, SPECIAL_DAY } from '../constants.js';
+import { calculateIndex, isIndexInRange, isValidDay, isWeekdayOrWeekend } from '../utils.js';
 
 class DiscountCalculator {
   constructor(visitDate, orderDetails) {
