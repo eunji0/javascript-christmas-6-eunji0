@@ -1,5 +1,5 @@
 import OrderProcessor from '../src/Domain/OrderProcessor.js';
-import { MENU_PRICES } from '../src/constants.js';
+import { MENU_PRICES } from '../src/Utils/constants.js';
 
 describe('OrderProcessor에 대한 Test', () => {
   const createOrderProcessor = (order) => new OrderProcessor(order);

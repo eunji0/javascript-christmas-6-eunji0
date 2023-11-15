@@ -6,7 +6,7 @@ import {
   MENU_PRICES,
   PRINT_MESSAGE,
   GIFT_EVENT_STANDARD,
-} from '../constants.js';
+} from '../Utils/constants.js';
 
 const OutputView = {
   printGreeting() {
