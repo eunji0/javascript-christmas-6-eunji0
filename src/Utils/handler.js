@@ -30,7 +30,7 @@ const discountCalculatorHandler = async (visitDate, orderDetails) =>
   ErrorHandlerAndRetry(
     async () => {
       const discountCalculator = new DiscountCalculator(visitDate, orderDetails);
-      return { discountCalculator };
+      return discountCalculator.calculateDiscounts(visitDate, orderDetails);
     },
     async () => discountCalculatorHandler(visitDate, orderDetails),
   );

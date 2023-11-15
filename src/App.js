@@ -40,9 +40,24 @@ class App {
 
   async calculateAndPrintBenefits(orderDetails, beforeDiscountTotalPrice) {
     if (beforeDiscountTotalPrice >= EVENT_APPLICATION_PRICE) {
-      const { discountCalculator } = await discountCalculatorHandler(this.#visitDate, orderDetails);
+      const {
+        totalBenefitPrice,
+        christmasDDayDiscount,
+        weekdayDiscount,
+        weekendDiscount,
+        specialDiscount,
+      } = await discountCalculatorHandler(this.#visitDate, orderDetails);
+
+      const discountCalculator = {
+        totalBenefitPrice,
+        christmasDDayDiscount,
+        weekdayDiscount,
+        weekendDiscount,
+        specialDiscount,
+      };
+
       OutputView.printBenefitDetails(discountCalculator, beforeDiscountTotalPrice);
-      this.#totalBenefitPrice = discountCalculator.totalBenefitPrice;
+      this.#totalBenefitPrice = totalBenefitPrice;
       return;
     }
     OutputView.printNotExist();
