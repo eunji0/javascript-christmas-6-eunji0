@@ -23,7 +23,7 @@ class OrderProcessor {
   #calculateOrderDetails(order) {
     return order.map((orderItem) => {
       const [menu, quantity] = orderItem.split('-').map((item) => item.trim());
-      return `${menu} ${quantity}개`;
+      return `${menu} ${parseInt(quantity, 10)}개`;
     });
   }
 
