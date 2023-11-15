@@ -1,4 +1,4 @@
-import { NUMBER } from './constants.js';
+import { NUMBER } from './constants';
 
 const isIndexInRange = (index, maxIndex) => index >= 0 && index < maxIndex;
 

@@ -1,4 +1,4 @@
-import DiscountCalculator from '../src/Domain/DiscountCalculator';
+import DiscountCalculator from '../src/DiscountCalculator';
 
 describe('DiscountCalculator에 대한 Test', () => {
   const createDiscountCalculator = (visitDate, orderDetails) =>

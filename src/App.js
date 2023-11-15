@@ -1,10 +1,6 @@
 import OutputView from './View/OutputView.js';
-import { EVENT_APPLICATION_PRICE, MENU_PRICES } from './Utils/constants.js';
-import {
-  discountCalculatorHandler,
-  orderProcessorHandler,
-  visitDateHandler,
-} from './Utils/handler.js';
+import { EVENT_APPLICATION_PRICE, MENU_PRICES } from './constants.js';
+import { discountCalculatorHandler, orderProcessorHandler, visitDateHandler } from './handler.js';
 
 class App {
   #visitDate;
