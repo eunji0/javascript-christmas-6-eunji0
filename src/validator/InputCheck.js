@@ -1,4 +1,4 @@
-import { NUMBER, ERROR_MESSAGE, MENU_LIST } from '../utils/constants.js';
+import { NUMBER, ERROR_MESSAGE, MENU_LIST } from '../Utils/constants.js';
 
 const checkInputFormat = (input, errorMessage) => {
   if (input === undefined) {

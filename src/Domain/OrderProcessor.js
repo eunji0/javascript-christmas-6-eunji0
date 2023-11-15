@@ -1,4 +1,4 @@
-import { MENU_PRICES } from '../utils/constants.js';
+import { MENU_PRICES } from '../Utils/constants.js';
 
 class OrderProcessor {
   constructor(order) {
