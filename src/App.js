@@ -53,7 +53,7 @@ class App {
 
   printFinalResults(beforeDiscountTotalPrice) {
     const totalWithGiftEvent =
-      this.#totalBenefitPrice + this.addGiftEvent(beforeDiscountTotalPrice);
+      this.#totalBenefitPrice + this.#addGiftEvent(beforeDiscountTotalPrice);
 
     OutputView.printTotalBenefitAmount(totalWithGiftEvent);
     OutputView.printAfterDiscountEstimatedPaymentAmount(
@@ -62,7 +62,7 @@ class App {
     OutputView.printDecemberEventBadge(totalWithGiftEvent);
   }
 
-  addGiftEvent(beforeDiscountTotalPrice) {
+  #addGiftEvent(beforeDiscountTotalPrice) {
     return beforeDiscountTotalPrice >= GIFT_EVENT_STANDARD ? MENU_PRICES.샴페인 : 0;
   }
 }
