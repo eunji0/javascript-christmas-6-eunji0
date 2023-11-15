@@ -1,4 +1,4 @@
-import OutputView from './View/OutputView.js';
+import OutputView from './OutputView.js';
 import { EVENT_APPLICATION_PRICE, MENU_PRICES } from './constants.js';
 import { discountCalculatorHandler, orderProcessorHandler, visitDateHandler } from './handler.js';
 

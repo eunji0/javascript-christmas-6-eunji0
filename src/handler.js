@@ -1,7 +1,7 @@
 import DiscountCalculator from './DiscountCalculator.js';
-import InputView from './View/InputView.js';
+import InputView from './InputView.js';
 import OrderProcessor from './OrderProcessor.js';
-import OutputView from './View/OutputView.js';
+import OutputView from './OutputView.js';
 
 const ErrorHandlerAndRetry = async (handler, retry) => {
   try {

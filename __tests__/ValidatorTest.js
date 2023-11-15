@@ -1,4 +1,4 @@
-import InputValidator from '../src/Validator/InputValidator.js';
+import InputValidator from '../src/InputValidator.js';
 import { ERROR_MESSAGE } from '../src/constants.js';
 
 const testMenuCountInput = (order) => InputValidator.menuCountInput(order);
